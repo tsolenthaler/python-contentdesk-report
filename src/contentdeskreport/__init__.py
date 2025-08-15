@@ -1,0 +1,49 @@
+from contentdeskreport.extract.extract import Extraction
+from contentdeskreport.check.checks import Checks
+from contentdeskopendata.transform.transform import Transform
+from contentdeskopendata.load.load import Load
+
+class ContentdeskReport:
+    """
+    ContentdeskReport class to extract data from a given target and generate a markdown file.
+    """
+    def __init__(self, host, clientid, secret, user, passwd, cdnurl, projectPath, organization, name, website, organization_website, email, region):
+        print("INIT - ContentdeskReport")
+        self.host = host
+        self.clientid = clientid
+        self.secret = secret
+        self.user = user
+        self.passwd = passwd
+        self.cdnurl = cdnurl
+        self.projectPath = projectPath
+        self.extractProducts = Extraction(self.host, self.clientid, self.secret, self.user, self.passwd)
+        self.debugExtractProducts()
+        self.checks = Checks(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
+        #self.transformProducts = Transform(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
+        #self.debugTransformProducts()
+        self.loadProducts = Load(self.transformProducts.getTransformProducts(), self.projectPath, organization, name, website, organization_website, email, region, self.license)
+        self.debugLoadProducts()
+    
+    def getExtractProducts(self):
+        """
+        Returns the extracted products.
+        """
+        return self.extractProducts
+    
+    def getTransformProducts(self):
+        return self.transformProducts
+    
+    def getLoadProducts(self):
+        return self.loadProducts
+    
+    def debugExtractProducts(self):
+        Load.debugToFile(self.extractProducts.getProducts(), "extractProducts", self.projectPath)
+        print("Debug file extractProducts created")
+    
+    def debugTransformProducts(self):
+        Load.debugToFile(self.transformProducts.getTransformProducts(), "transformProducts", self.projectPath)
+        print("Debug file transformProducts created")
+        
+    def debugLoadProducts(self):
+        Load.debugToFile(self.loadProducts.getLoadProducts(), "loadProducts", self.projectPath)
+        print("Debug file loadProducts created")
