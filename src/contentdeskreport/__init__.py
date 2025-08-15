@@ -1,7 +1,6 @@
 from contentdeskreport.extract.extract import Extraction
 from contentdeskreport.check.checks import Checks
-from contentdeskopendata.transform.transform import Transform
-from contentdeskopendata.load.load import Load
+from contentdeskreport.load.load import Load
 
 class ContentdeskReport:
     """
@@ -21,7 +20,7 @@ class ContentdeskReport:
         self.checks = Checks(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
         #self.transformProducts = Transform(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
         #self.debugTransformProducts()
-        self.loadProducts = Load(self.transformProducts.getTransformProducts(), self.projectPath, organization, name, website, organization_website, email, region, self.license)
+        self.loadProducts = Load(self.checks, self.projectPath, organization, name, website, organization_website, email, region, self.license)
         self.debugLoadProducts()
     
     def getExtractProducts(self):
@@ -39,11 +38,7 @@ class ContentdeskReport:
     def debugExtractProducts(self):
         Load.debugToFile(self.extractProducts.getProducts(), "extractProducts", self.projectPath)
         print("Debug file extractProducts created")
-    
-    def debugTransformProducts(self):
-        Load.debugToFile(self.transformProducts.getTransformProducts(), "transformProducts", self.projectPath)
-        print("Debug file transformProducts created")
         
     def debugLoadProducts(self):
-        Load.debugToFile(self.loadProducts.getLoadProducts(), "loadProducts", self.projectPath)
+        Load.debugToFile(self.checks, "loadProducts", self.projectPath)
         print("Debug file loadProducts created")
