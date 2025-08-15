@@ -31,6 +31,9 @@ flowchart TD
     Check --> Check1
     Check --> Check2
     Check --> Check3
-    Check --> Report
+    Check1 --> CheckSummary
+    Check2 --> CheckSummary
+    Check3 --> CheckSummary
+    CheckSummary --> Report
     Load
 ```
