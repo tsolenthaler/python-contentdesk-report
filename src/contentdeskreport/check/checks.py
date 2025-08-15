@@ -1,4 +1,4 @@
-import checkUrl
+import contentdeskreport.check.checkUrl as checkUrl
 
 class Checks:
     def __init__(self, products, projectPath, cdnurl):
