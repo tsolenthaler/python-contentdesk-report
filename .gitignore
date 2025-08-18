@@ -1,0 +1,9 @@
+dist/*
+src/akeneo.egg-info/*
+test/*
+tests/*
+.env
+*__pycache__*
+debug/*
+api/*
+docs/*
