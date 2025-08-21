@@ -14,6 +14,7 @@ class Transform:
         jsonLD = []
         for product in self.extractProducts:
             newProduct = self.setProductJSONLD(product)
+            #newProduct = product
             jsonLD.append(newProduct)
     
         return jsonLD

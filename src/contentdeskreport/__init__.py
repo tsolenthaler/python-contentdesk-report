@@ -1,4 +1,5 @@
 from contentdeskreport.extract.extract import Extraction
+from contentdeskreport.transform.transform import Transform
 from contentdeskreport.check.checks import Checks
 from contentdeskreport.load.load import Load
 
@@ -18,9 +19,9 @@ class ContentdeskReport:
         self.extractProducts = Extraction(self.host, self.clientid, self.secret, self.user, self.passwd)
         self.debugExtractProducts()
         #self.checks = Checks(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
-        #self.transformProducts = Transform(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
+        self.transformProducts = Transform(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
         #self.debugTransformProducts()
-        self.loadProducts = Load(self.extractProducts, self.projectPath, organization, name, website, organization_website, email, region)
+        self.loadProducts = Load(self.transformProducts.getTransformProducts(), self.projectPath, organization, name, website, organization_website, email, region)
         self.debugLoadProducts()
     
     def getExtractProducts(self):
