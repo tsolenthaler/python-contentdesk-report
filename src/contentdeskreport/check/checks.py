@@ -6,4 +6,4 @@ class Checks:
         self.products = products
         self.projectPath = projectPath
         self.cdnurl = cdnurl
-        self.ResultCheckUrl = checkUrl.checkUrl(self.products, self.projectPath, self.cdnurl)
+        self.ResultCheckUrl = checkUrl.checkUrl(self.products)
