@@ -4,7 +4,8 @@ from datetime import datetime
 
 class Load:
     
-    def __init__(self, checks, projectPath, organization, name, website, organization_website, email, region):
+    def __init__(self, products, projectPath, organization, name, website, organization_website, email, region):
+        self.products = products
         self.projectPath = projectPath
         self.organization = organization
         self.name = name
@@ -12,78 +13,33 @@ class Load:
         self.organization_website = organization_website
         self.email = email
         self.region = region
-        self.checks = checks
+        #self.checks = checks
         #self.countProducts = len(self.checks)
         #self.typesClass = self.loadAllTypes()
-        #self.loadProducts = self.setLoadProducts()
-        self.loadChecks = self.setLoadChecks()
+        self.loadProducts = self.setLoadProducts()
+        #self.loadChecks = self.setLoadChecks()
         self.createMarkDownFileIndex()
                
     def getLoadProducts(self):
-        return self.transformProducts
+        return self.loadProducts
     
-    def setLoadChecks(self):
-        self.loadProductsToFile(self.checks.ResultCheckUrl, "checkUrl")
+    #def setLoadChecks(self):
+    #    self.loadProductsToFile(self.checks.ResultCheckUrl, "checkUrl")
 
     def setLoadProducts(self):
         # All Products to api/products.json
-        self.loadProductsToFile(self.transformProducts, "products")
-        
-        # Create Main Type-Groupes
-        # Place
-        #   Accommodation
-        #   CivicStructure
-        #      AdministrativeArea
-        #      TransportationSystem
-        #   LocalBusiness
-        #      FoodEstablishment
-        #      LodgingBusiness
-        #   Tour
-        #   Webcam
-        # Event
-        # Product
-        # CreativeWork
-        #   MediaObject
-        
-        self.createProductListbyParentTyp("Place")
-        self.loadFormats(self.transformProducts, "Place", "Place")
-        self.createProductListbyParentTyp("Accommodation")
-        self.loadFormats(self.transformProducts, "Accommodation", "Accommodation")
-        self.createProductListbyParentTyp("CivicStructure")
-        self.loadFormats(self.transformProducts, "CivicStructure", "CivicStructure")
-        self.createProductListbyParentTyp("AdministrativeArea")
-        self.loadFormats(self.transformProducts, "AdministrativeArea", "AdministrativeArea")
-        self.createProductListbyParentTyp("TransportationSystem")
-        self.loadFormats(self.transformProducts, "TransportationSystem", "TransportationSystem")
-        self.createProductListbyParentTyp("LocalBusiness")
-        self.loadFormats(self.transformProducts, "LocalBusiness", "LocalBusiness")
-        self.createProductListbyParentTyp("FoodEstablishment")
-        self.loadFormats(self.transformProducts, "FoodEstablishment", "FoodEstablishment")
-        self.createProductListbyParentTyp("LodgingBusiness")
-        self.loadFormats(self.transformProducts, "LodgingBusiness", "LodgingBusiness")
-        self.createProductListbyParentTyp("Tour")
-        self.loadFormats(self.transformProducts, "Tour", "Tour")
-        self.createProductListbyParentTyp("Webcam")
-        self.loadFormats(self.transformProducts, "Webcam", "Webcam")
-        self.createProductListbyParentTyp("Event")
-        self.loadFormats(self.transformProducts, "Event", "Event")
-        self.createProductListbyParentTyp("Product")
-        self.loadFormats(self.transformProducts, "Product", "Product")
-        self.createProductListbyParentTyp("CreativeWork")
-        self.loadFormats(self.transformProducts, "CreativeWork", "CreativeWork")
-        self.createProductListbyParentTyp("MediaObject")
-        self.loadFormats(self.transformProducts, "MediaObject", "MediaObject")
-        
-        return self.transformProducts
+        self.loadProductsToFile(self.products, "products")
+    
+        return self.products
     
     def loadProductsToFile(self, products, fileName):        
         # Check if folder exists
         # TODO: Fix Folder Path by Settings
-        print("Folder Path: ", self.projectPath+"/check/"+fileName+".json")
-        if not os.path.exists(self.projectPath+"/check/"):
-            os.makedirs(self.projectPath+"/check/")
+        print("Folder Path: ", self.projectPath+"/api/"+fileName+".json")
+        if not os.path.exists(self.projectPath+"/api/"):
+            os.makedirs(self.projectPath+"/api/")
         
-        with open(self.projectPath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
+        with open(self.projectPath+"/api/"+fileName+".json", "w", encoding="utf-8") as file:
             file.write(json.dumps(products))
 
         
