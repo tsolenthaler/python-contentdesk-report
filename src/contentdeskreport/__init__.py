@@ -20,7 +20,7 @@ class ContentdeskReport:
         #self.checks = Checks(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
         #self.transformProducts = Transform(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
         #self.debugTransformProducts()
-        self.loadProducts = Load(self.checks, self.projectPath, organization, name, website, organization_website, email, region, self.license)
+        self.loadProducts = Load(self.extractProducts, self.projectPath, organization, name, website, organization_website, email, region)
         self.debugLoadProducts()
     
     def getExtractProducts(self):
