@@ -1,6 +1,6 @@
 import requests
 
-def checkUrl(self, products):
+def checkUrl(products):
     results = []
     checkProperty = 'url'
     checkObjectColumn = 'name'
