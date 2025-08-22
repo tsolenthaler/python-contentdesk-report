@@ -24,21 +24,19 @@ def loadProducts(self):
         print(f"File {product_file_path} does not exist.")
         return []
     
-def loadProductsToFile(self, products, fileName):        
+def loadProductsToFile(self, products, fileName, projectpath):        
     # Check if folder exists
     # TODO: Fix Folder Path by Settings
-    print("Folder Path: ", self.projectPath+"/check/"+fileName+".json")
-    if not os.path.exists(self.projectPath+"/check/"):
-        os.makedirs(self.projectPath+"/check/")
+    print("Folder Path: ", projectpath+"/check/"+fileName+".json")
+    if not os.path.exists(projectpath+"/check/"):
+        os.makedirs(projectpath+"/check/")
 
-    with open(self.projectPath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
+    with open(projectpath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
         file.write(json.dumps(products))
 
-def startCheck():
+def startCheck(self, projectpath):
     response = requests.get("/api/products.json")
     products = response.json()
     results = checkUrl(products)
-    with open("check/checkUrlExist.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-        
-
+    
+    loadProductsToFile(self, results, "checkUrlExist", projectpath)
