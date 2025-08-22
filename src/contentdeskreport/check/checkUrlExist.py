@@ -1,4 +1,6 @@
+import os
 import requests
+import json
 
 def checkUrl(products):
     results = []
@@ -10,3 +12,33 @@ def checkUrl(products):
         else:
             print(f"No URL found for product: {product['identifier']}")
     return results
+
+def loadProducts(self):
+    product_file_path = os.path.join(self.projectPath, "products.json")
+    print("Product File Path: ", product_file_path)
+    if os.path.exists(product_file_path):
+        with open(product_file_path, "r") as file:
+            products = json.load(file)
+        return products
+    else:
+        print(f"File {product_file_path} does not exist.")
+        return []
+    
+def loadProductsToFile(self, products, fileName):        
+    # Check if folder exists
+    # TODO: Fix Folder Path by Settings
+    print("Folder Path: ", self.projectPath+"/check/"+fileName+".json")
+    if not os.path.exists(self.projectPath+"/check/"):
+        os.makedirs(self.projectPath+"/check/")
+
+    with open(self.projectPath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
+        file.write(json.dumps(products))
+
+def startCheck():
+    response = requests.get("/api/products.json")
+    products = response.json()
+    results = checkUrl(products)
+    with open("check/checkUrlExist.json", "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
+        
+
