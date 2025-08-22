@@ -3,8 +3,9 @@ import requests
 import json
 
 class CheckUrlExist:
-    def __init__(self, projectPath):
+    def __init__(self, projectPath, productsUrl):
         self.projectPath = projectPath
+        self.productsUrl = productsUrl
         self.startCheck()
 
     def checkUrl(self, products):
@@ -39,8 +40,18 @@ class CheckUrlExist:
         with open(self.projectPath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
             file.write(json.dumps(products))
 
+    def loadProductsFromUrl(self):
+        try:
+            response = requests.get(self.productsUrl+"/api/products.json")
+            response.raise_for_status()  # Raise an error for HTTP errors
+            products = response.json()
+            return products
+        except requests.RequestException as e:
+            print(f"Error loading products from URL: {e}")
+            return []
+
     def startCheck(self):
-        products = self.loadProducts()
+        products = self.loadProductsFromUrl()
         results = self.checkUrl(products)
 
         self.loadProductsToFile(results, "checkUrlExist")
