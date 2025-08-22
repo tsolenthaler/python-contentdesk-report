@@ -95,7 +95,7 @@ class Transform:
         if 'addressLocality' in product['values']:
             newProduct['addressLocality'] = product['values']['addressLocality'][0]['data']
         if 'addressCountry' in product['values']:
-            newProduct['addressCountry']['name'] = product['values']['addressCountry'][0]['data']
+            newProduct['addressCountry'] = product['values']['addressCountry'][0]['data']
         if 'addressRegion' in product['values']:
             newProduct['addressRegion'] = product['values']['addressRegion'][0]['data']
         if 'postalCode' in product['values']:
