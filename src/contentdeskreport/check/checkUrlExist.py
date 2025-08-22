@@ -19,7 +19,7 @@ class CheckUrlExist:
         return results
 
     def loadProducts(self):
-        product_file_path = os.path.join(self.projectPath+"/api/", "products.json")
+        product_file_path = os.path.join(self.projectPath, "api", "products.json")
         print("Product File Path: ", product_file_path)
         if os.path.exists(product_file_path):
             with open(product_file_path, "r") as file:
@@ -29,18 +29,18 @@ class CheckUrlExist:
             print(f"File {product_file_path} does not exist.")
             return []
         
-    def loadProductsToFile(self, products, fileName, projectpath):        
+    def loadProductsToFile(self, products, fileName):        
         # Check if folder exists
         # TODO: Fix Folder Path by Settings
-        print("Folder Path: ", projectpath+"/check/"+fileName+".json")
-        if not os.path.exists(projectpath+"/check/"):
-            os.makedirs(projectpath+"/check/")
+        print("Folder Path: ", self.projectPath+"/check/"+fileName+".json")
+        if not os.path.exists(self.projectPath+"/check/"):
+            os.makedirs(self.projectPath+"/check/")
 
-        with open(projectpath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
+        with open(self.projectPath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
             file.write(json.dumps(products))
 
     def startCheck(self):
         products = self.loadProducts()
         results = self.checkUrl(products)
 
-        self.loadProductsToFile(results, "checkUrlExist", self.projectPath)
+        self.loadProductsToFile(results, "checkUrlExist")
