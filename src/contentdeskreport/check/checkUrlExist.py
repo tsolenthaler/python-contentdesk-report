@@ -33,11 +33,11 @@ class CheckUrlExist:
     def loadProductsToFile(self, products, fileName):        
         # Check if folder exists
         # TODO: Fix Folder Path by Settings
-        print("Folder Path: ", self.projectPath+"/check/"+fileName+".json")
-        if not os.path.exists(self.projectPath+"/check/"):
-            os.makedirs(self.projectPath+"/check/")
+        print("Folder Path: ", self.projectPath+"/api/check/"+fileName+".json")
+        if not os.path.exists(self.projectPath+"/api/check/"):
+            os.makedirs(self.projectPath+"/api/check/")
 
-        with open(self.projectPath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
+        with open(self.projectPath+"/api/check/"+fileName+".json", "w", encoding="utf-8") as file:
             file.write(json.dumps(products))
 
     def loadProductsFromUrl(self):
