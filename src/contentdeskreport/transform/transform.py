@@ -8,8 +8,15 @@ class Transform:
         self.extractProducts = extractProducts
         self.cdnurl = cdnurl
         self.categories = self.loadCategories()
-        self.transformProducts = self.transformToJSONLD()
-    
+        self.transformProducts = self.transformToJSON()
+
+    def transformToJSON(self):
+        json = []
+        for product in self.extractProducts:
+            newProduct = self.setProductJSON(product)
+            json.append(newProduct)
+        return json
+
     def transformToJSONLD(self):
         jsonLD = []
         for product in self.extractProducts:
@@ -66,6 +73,79 @@ class Transform:
     def getCdnUrl(self):
         return self.cdnurl
     
+    def setProductJSON(self, product):
+        newProduct = {}
+        newProduct['identifier'] = product["identifier"]
+        newProduct['uuid'] = product["uuid"]
+        if 'family' in product:
+            newProduct['family'] = product["family"]
+        newProduct['dateCreated'] = product['created']
+        newProduct['dateModified'] = product['updated']
+        
+        if 'name' in product["values"]:
+            newProduct['name'] = self.languageToJSONLD(product["values"]['name'])
+        if 'disambiguatingDescription' in product["values"]:
+            newProduct['disambiguatingDescription'] = self.languageToJSONLD(product["values"]['disambiguatingDescription']) 
+        if 'description' in product["values"]:
+            newProduct['description'] = self.languageToJSONLD(product["values"]['description'])
+        if 'license' in product["values"]:
+            newProduct['license'] = self.license(product["values"]["license"][0]['data'])
+            
+        # Address / Contact
+        if 'addressLocality' in product['values']:
+            newProduct['addressLocality'] = product['values']['addressLocality'][0]['data']
+        if 'addressCountry' in product['values']:
+            newProduct['addressCountry']['name'] = product['values']['addressCountry'][0]['data']
+        if 'addressRegion' in product['values']:
+            newProduct['addressRegion'] = product['values']['addressRegion'][0]['data']
+        if 'postalCode' in product['values']:
+            newProduct['postalCode'] = product['values']['postalCode'][0]['data']
+        if 'streetAddress' in product['values']:
+            newProduct['streetAddress'] = product['values']['streetAddress'][0]['data']
+        if 'telephone' in product['values']:
+            newProduct['telephone'] = product['values']['telephone'][0]['data']
+        if 'email' in product['values']:
+            newProduct['email'] = product['values']['email'][0]['data']
+        if 'url' in product['values']:
+            newProduct['url'] = product['values']['url'][0]['data']
+            
+        # Geo
+        if 'latitude' in product['values']:
+            geo = {}
+            geo['@type'] = 'GeoCoordinates'
+            geo['latitude'] = product['values']['latitude'][0]['data']
+            if 'longitude' in product['values']:
+                geo['longitude'] = product['values']['longitude'][0]['data']
+            newProduct['geo'] = geo
+        # Images
+        if 'image' in product['values']:
+            # TODO: Image Group / Array with Gallery-Images
+            newProduct['image'] = []
+            newImage = {}
+            newImage['@type'] = 'ImageObject'
+            newImage['contentUrl'] = self.cdnurl + product['values']['image'][0]['data']
+            if 'image_description' in product['values']:
+                newImage['caption'] = self.languageToJSONLD(product['values']['image_description'])
+            newProduct['image'].append(newImage)
+        
+        # openingHours
+        if 'openingHours' in product['values']:
+            newProduct['openingHours'] = self.languageToJSONLD(product['values']['openingHours'])
+            
+        if 'openingHoursSpecification' in product['values']:
+            # TODO: Split openingHoursSpecification to specialOpeningHoursSpecification
+            newProduct['openingHoursSpecification'] = product['values']['openingHoursSpecification'][0]['data']
+            # TODO: set specialOpeningHoursSpecification
+            #newProduct['specialOpeningHoursSpecification'] = product['values']['specialOpeningHoursSpecification'][0]['data']
+            
+        if 'amenityFeature' in product['values']:
+            newProduct['amenityFeature'] = self.setAmenityFeature(product)
+            
+        if 'award' in product['values']:
+            newProduct['award'] = self.setAward(product)
+            
+        return newProduct
+
     def setProductJSONLD(self, product):
         newProduct = {}
         newProduct['@context'] = "http://schema.org/"
