@@ -40,8 +40,7 @@ class CheckUrlExist:
             file.write(json.dumps(products))
 
     def startCheck(self):
-        response = requests.get("/api/products.json")
-        products = response.json()
+        products = self.loadProducts()
         results = self.checkUrl(products)
 
         self.loadProductsToFile(results, "checkUrlExist", self.projectPath)
