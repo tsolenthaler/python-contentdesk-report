@@ -19,7 +19,7 @@ class CheckUrlExist:
         return results
 
     def loadProducts(self):
-        product_file_path = os.path.join(self.projectPath, "products.json")
+        product_file_path = os.path.join(self.projectPath+"/api/", "products.json")
         print("Product File Path: ", product_file_path)
         if os.path.exists(product_file_path):
             with open(product_file_path, "r") as file:
