@@ -52,8 +52,8 @@ class CheckUrlExist:
             return []
 
     def startCheck(self):
-        print ("Projekt Pfad: ", self.projectPath)
-        products = self.loadProducts()
+        print ("Load Products from URL "+ self.productsUrl+"/api/LodgingBusiness.json")
+        products = self.loadProductsFromUrl()
         print("Check Produkte by URL exist")
         results = self.checkUrl(products)
         print("Add Result to File")
