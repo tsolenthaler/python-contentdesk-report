@@ -14,8 +14,8 @@ class Load:
         self.email = email
         self.region = region
         #self.checks = checks
-        #self.countProducts = len(self.checks)
-        #self.typesClass = self.loadAllTypes()
+        self.countProducts = len(self.products)
+        self.typesClass = self.loadAllTypes()
         self.loadProducts = self.setLoadProducts()
         #self.loadChecks = self.setLoadChecks()
         self.createMarkDownFileIndex()
@@ -29,6 +29,21 @@ class Load:
     def setLoadProducts(self):
         # All Products to api/products.json
         self.loadProductsToFile(self.products, "products")
+        
+        self.createProductListbyParentTyp("Place")
+        self.createProductListbyParentTyp("Accommodation")
+        self.createProductListbyParentTyp("CivicStructure")
+        self.createProductListbyParentTyp("AdministrativeArea")
+        self.createProductListbyParentTyp("TransportationSystem")
+        self.createProductListbyParentTyp("LocalBusiness")
+        self.createProductListbyParentTyp("FoodEstablishment")
+        self.createProductListbyParentTyp("LodgingBusiness")
+        self.createProductListbyParentTyp("Tour")
+        self.createProductListbyParentTyp("Webcam")
+        self.createProductListbyParentTyp("Event")
+        self.createProductListbyParentTyp("Product")
+        self.createProductListbyParentTyp("CreativeWork")
+        self.createProductListbyParentTyp("MediaObject")
     
         return self.products
     
@@ -42,6 +57,28 @@ class Load:
         with open(self.projectPath+"/api/"+fileName+".json", "w", encoding="utf-8") as file:
             file.write(json.dumps(products))
 
+    def createProductListbyParentTyp(self, typeClass):
+        types = self.setTypesListbyParent(typeClass)
+        products = self.getProductsbyTypes(types)
+        self.loadProductsToFile(products, typeClass)
+        return products
+    
+    def setTypesListbyParent(self, parentType):
+        types = []
+        for typeClass in self.typesClass:
+            if self.typesClass[typeClass]['parent'] == parentType:
+                types.append(typeClass)
+            elif typeClass == parentType:
+                types.append(typeClass)
+        return types
+    
+    def getProductsbyTypes(self, types):
+        products = []
+        for product in self.products:
+            if product.get("family") in types:
+                products.append(product)
+                
+        return products
         
     def debugToFile(products, fileName, projectPath):
          # get current date and time
@@ -104,11 +141,56 @@ class Load:
             file.write("# Report Portal\n\n")
             
             file.write("## Checks\n\n")
-            
             file.write("| Check       | Export       |\n")
             file.write("| ----------- | ------------ |\n")
             file.write("| Check URL Exist   | /check/urlExist             |\n")
             file.write("| Check URL Valid   | /check/urlValid             |\n")
-
+            file.write("\n\n")
+            
+            file.write("## Objekte nach Typ\n\n")
+            file.write("| Daten      | Format                           | Ansehen\n")
+            file.write("| ----------- | --------------------------------| ----------- |\n")
+            dataset = self.createMarkDownString("Alle Produkte", "products", self.checkLengthinFile("products"))
+            if self.checkLengthinFile("Place") > 0:
+                dataset += self.createMarkDownString("Orte", "Place", self.checkLengthinFile("Place"))
+            if self.checkLengthinFile("Accommodation") > 0:
+                dataset += self.createMarkDownString("Unterkünfte", "Accommodation", self.checkLengthinFile("Accommodation"))
+            if self.checkLengthinFile("CivicStructure") > 0:
+                dataset += self.createMarkDownString("Öffentliche Anlage/Einrichtung", "CivicStructure", self.checkLengthinFile("CivicStructure"))
+            if self.checkLengthinFile("AdministrativeArea") > 0:
+                dataset += self.createMarkDownString("Verwaltungsgebiet", "AdministrativeArea", self.checkLengthinFile("AdministrativeArea"))
+            if self.checkLengthinFile("TransportationSystem") > 0:
+                dataset += self.createMarkDownString("Transportsystemstation", "TransportationSystem", self.checkLengthinFile("TransportationSystem"))
+            if self.checkLengthinFile("LocalBusiness") > 0:
+                dataset += self.createMarkDownString("Lokale Geschäfte / Freizeit / Dienstleistung", "LocalBusiness", self.checkLengthinFile("LocalBusiness"))
+            if self.checkLengthinFile("FoodEstablishment") > 0:
+                dataset += self.createMarkDownString("Gastronomie", "FoodEstablishment", self.checkLengthinFile("FoodEstablishment"))
+            if self.checkLengthinFile("LodgingBusiness") > 0:
+                dataset += self.createMarkDownString("Beherbergungsbetrieb", "LodgingBusiness", self.checkLengthinFile("LodgingBusiness"))
+            if self.checkLengthinFile("Tour") > 0:
+                dataset += self.createMarkDownString("Tour", "Tour", self.checkLengthinFile("Tour"))
+            if self.checkLengthinFile("Webcam") > 0:
+                dataset += self.createMarkDownString("Webcam", "Webcam", self.checkLengthinFile("Webcam"))
+            if self.checkLengthinFile("Event") > 0:
+                dataset += self.createMarkDownString("Event", "Event", self.checkLengthinFile("Event"))
+            if self.checkLengthinFile("Product") > 0:
+                dataset += self.createMarkDownString("Produkte", "Product", self.checkLengthinFile("Product"))
+            if self.checkLengthinFile("CreativeWork") > 0:
+                dataset += self.createMarkDownString("Kreative Arbeit", "CreativeWork", self.checkLengthinFile("CreativeWork"))
+            if self.checkLengthinFile("MediaObject") > 0:
+                dataset += self.createMarkDownString("Medienobjekt", "MediaObject", self.checkLengthinFile("MediaObject"))
+            file.write(dataset)
+            file.write("\n\n")
 
         print(f"Markdown file created at: {markdown_file_path}")
+        
+    def loadAllTypes(self):
+        types_file_path = os.path.join(self.projectPath, "types.json")
+        print("Types File Path: ", types_file_path)
+        if os.path.exists(types_file_path):
+            with open(types_file_path, "r") as file:
+                types = json.load(file)
+            return types
+        else:
+            print(f"File {types_file_path} does not exist.")
+            return []
