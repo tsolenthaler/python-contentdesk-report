@@ -14,13 +14,14 @@ class CheckUrlExist:
         for product in products:
             print(f"Checking Objekt: {product['identifier']}")
             if checkProperty in product:
+                print(f"Found URL: {product[checkProperty]} for product: {product['identifier']}")
                 results.append({'identifier': product['identifier'], 'uuid': product['uuid'], 'url': product['url']})
             else:
                 print(f"No URL found for product: {product['identifier']}")
         return results
 
     def loadProducts(self):
-        product_file_path = os.path.join(self.projectPath, "api", "products.json")
+        product_file_path = os.path.join(self.projectPath, "api", "LodgingBusiness.json")
         print("Product File Path: ", product_file_path)
         if os.path.exists(product_file_path):
             with open(product_file_path, "r") as file:
@@ -42,7 +43,7 @@ class CheckUrlExist:
 
     def loadProductsFromUrl(self):
         try:
-            response = requests.get(self.productsUrl+"/api/products.json")
+            response = requests.get(self.productsUrl+"/api/LodgingBusiness.json")
             response.raise_for_status()  # Raise an error for HTTP errors
             products = response.json()
             return products
@@ -51,7 +52,9 @@ class CheckUrlExist:
             return []
 
     def startCheck(self):
-        products = self.loadProductsFromUrl()
+        print ("Projekt Pfad: ", self.projectPath)
+        products = self.loadProducts()
+        print("Check Produkte by URL exist")
         results = self.checkUrl(products)
-
+        print("Add Result to File")
         self.loadProductsToFile(results, "checkUrlExist")
