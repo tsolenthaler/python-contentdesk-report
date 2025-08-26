@@ -20,6 +20,7 @@ class CheckUrlExist:
                 print(f"No URL found for product: {product['identifier']}")
         return results
 
+    # Remove
     def loadProducts(self):
         product_file_path = os.path.join(self.projectPath, "api", "LodgingBusiness.json")
         print("Product File Path: ", product_file_path)
@@ -41,7 +42,7 @@ class CheckUrlExist:
         with open(self.projectPath+"/check/"+fileName+".json", "w", encoding="utf-8") as file:
             file.write(json.dumps(products))
 
-    def loadProductsFromUrl(self):
+    def getProductsFromUrl(self):
         try:
             response = requests.get(self.productsUrl+"/api/LodgingBusiness.json")
             response.raise_for_status()  # Raise an error for HTTP errors
@@ -53,7 +54,7 @@ class CheckUrlExist:
 
     def startCheck(self):
         print ("Load Products from URL "+ self.productsUrl+"/api/LodgingBusiness.json")
-        products = self.loadProductsFromUrl()
+        products = self.getProductsFromUrl()
         print("Check Produkte by URL exist")
         results = self.checkUrl(products)
         print("Add Result to File")
