@@ -9,6 +9,14 @@ class Transform:
         self.cdnurl = cdnurl
         self.categories = self.loadCategories()
         self.transformProducts = self.transformToJSON()
+        self.transformProductsAkeneo = self.transformToJSONAkeneo()
+
+    def transformToJSONAkeneo(self):
+        json = []
+        for product in self.extractProducts:
+            newProduct = product
+            json.append(newProduct)
+        return json
 
     def transformToJSON(self):
         json = []
@@ -69,7 +77,10 @@ class Transform:
     
     def getTransformProducts(self):
         return self.transformProducts
-    
+
+    def getTransformProductsAkeneo(self):
+        return self.transformProductsAkeneo
+
     def getCdnUrl(self):
         return self.cdnurl
     

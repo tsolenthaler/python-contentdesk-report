@@ -4,8 +4,9 @@ from datetime import datetime
 
 class Load:
     
-    def __init__(self, products, projectPath, organization, name, website, organization_website, email, region):
+    def __init__(self, products, projectPath, organization, name, website, organization_website, email, region, productsAkeneo):
         self.products = products
+        self.productsAkeneo = productsAkeneo
         self.projectPath = projectPath
         self.organization = organization
         self.name = name
@@ -29,7 +30,8 @@ class Load:
     def setLoadProducts(self):
         # All Products to api/products.json
         self.loadProductsToFile(self.products, "products")
-        
+        self.loadProductsToFileAkeneo(self.productsAkeneo, "products")
+
         self.createProductListbyParentTyp("Place")
         self.createProductListbyParentTyp("Accommodation")
         self.createProductListbyParentTyp("CivicStructure")
@@ -55,6 +57,16 @@ class Load:
             os.makedirs(self.projectPath+"/api/")
         
         with open(self.projectPath+"/api/"+fileName+".json", "w", encoding="utf-8") as file:
+            file.write(json.dumps(products))
+
+    def loadProductsToFileAkeneo(self, products, fileName):        
+        # Check if folder exists
+        # TODO: Fix Folder Path by Settings
+        print("Folder Path: ", self.projectPath+"/akeneo/"+fileName+".json")
+        if not os.path.exists(self.projectPath+"/akeneo/"):
+            os.makedirs(self.projectPath+"/akeneo/")
+        
+        with open(self.projectPath+"/akeneo/"+fileName+".json", "w", encoding="utf-8") as file:
             file.write(json.dumps(products))
 
     def createProductListbyParentTyp(self, typeClass):
