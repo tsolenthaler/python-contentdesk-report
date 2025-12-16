@@ -21,7 +21,7 @@ class Load:
         #self.loadChecks = self.setLoadChecks()
         self.createHistoryStats()
         self.createMarkDownFileHistoryStats()
-        self.createMarkDownFileIndex()
+        self.createMarkDownFileTypes()
                
     def getLoadProducts(self):
         return self.loadProducts
@@ -176,9 +176,9 @@ class Load:
             else:
                 file.write("No debug data available.\n")
     
-    def createMarkDownFileIndex(self):
+    def createMarkDownFileTypes(self):
         # create a markdown file with the name "data.md" in the projectPath
-        markdown_file_path = os.path.join(self.projectPath, "index.md")
+        markdown_file_path = os.path.join(self.projectPath, "types.md")
         with open(markdown_file_path, "w", encoding='utf-8') as file:
             file.write("---\n")
             file.write("hide:\n")
