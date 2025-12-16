@@ -27,13 +27,17 @@ pip install -i https://test.pypi.org/simple/ contentdesk-report/==0.0.1
 
 ```mermaid
 flowchart TD
-    Extract --> Check
-    Check --> Check1
-    Check --> Check2
-    Check --> Check3
+    Extract --> Checks
+    Extract --> History
+    History --> Stats
+    History --> OriginalExtract
+    Checks --> Check1
+    Checks --> Check2
+    Checks --> Check3
     Check1 --> CheckSummary
     Check2 --> CheckSummary
     Check3 --> CheckSummary
     CheckSummary --> Report
-    Load
+    Report --> Load
+    Load --> Mkdocs
 ```

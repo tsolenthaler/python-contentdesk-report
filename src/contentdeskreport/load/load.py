@@ -19,6 +19,8 @@ class Load:
         self.typesClass = self.loadAllTypes()
         self.loadProducts = self.setLoadProducts()
         #self.loadChecks = self.setLoadChecks()
+        self.createHistoryStats()
+        self.createMarkDownFileHistoryStats()
         self.createMarkDownFileIndex()
                
     def getLoadProducts(self):
@@ -139,7 +141,40 @@ class Load:
             if item:
                 newstring += '* '+item + '\n'
         return newstring
-            
+    
+    def createHistoryStats(self):
+        toDayHistory = self.checkLengthinFile("products")
+        
+        # load existing history file or create a new one
+        history_file_path = os.path.join(self.projectPath, "history.json")
+        if os.path.exists(history_file_path):
+            with open(history_file_path, "r") as file:
+                history_data = json.load(file)
+        else:
+            history_data = {}
+        # get current date
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        history_data[current_date] = toDayHistory
+        # save updated history data back to file
+        with open(history_file_path, "w") as file:
+            json.dump(history_data, file, indent=4)
+    
+    def createMarkDownFileHistoryStats(self):
+        markdown_file_path = os.path.join(self.projectPath, "history.md")
+        with open(markdown_file_path, "w", encoding='utf-8') as file:
+            file.write("# History Stats\n\n")
+            file.write("## Produktanzahl über die Zeit\n\n")
+            file.write("| Datum       | Produktanzahl       |\n")
+            file.write("| ----------- | ------------------- |\n")
+            # Read history data
+            history_file_path = os.path.join(self.projectPath, "history.json")
+            if os.path.exists(history_file_path):
+                with open(history_file_path, "r") as histfile:
+                    history_data = json.load(histfile)
+                for date, count in sorted(history_data.items()):
+                    file.write(f"| {date} | {count} |\n")
+            else:
+                file.write("No debug data available.\n")
     
     def createMarkDownFileIndex(self):
         # create a markdown file with the name "data.md" in the projectPath
