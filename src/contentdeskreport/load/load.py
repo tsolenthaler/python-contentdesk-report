@@ -22,6 +22,7 @@ class Load:
         self.createHistoryStats()
         self.createMarkDownFileHistoryStats()
         self.createMarkDownFileTypes()
+        self.createMarkDownFileChecks()
                
     def getLoadProducts(self):
         return self.loadProducts
@@ -176,6 +177,30 @@ class Load:
             else:
                 file.write("No debug data available.\n")
     
+    def createMarkDownFileChecks(self):
+        # create a markdown file with the name "data.md" in the projectPath
+        markdown_file_path = os.path.join(self.projectPath+"/check/", "checks.md")
+        with open(markdown_file_path, "w", encoding='utf-8') as file:
+            file.write("---\n")
+            file.write("hide:\n")
+            file.write("  - navigation\n")
+            file.write("  - toc\n")
+            file.write("---\n")
+            file.write("# Result Checks\n\n")
+            file.write("| Check       | Export       |\n")
+            file.write("| ----------- | ------------ |\n")
+            file.write("| Check URL Exist   | /check/urlExist             |\n")
+            file.write("| Check URL Valid   | /check/urlValid             |\n")
+            file.write("\n\n")
+            
+            file.write("## Check URL Exist\n\n")
+            file.write("| Objekt ID       | UUID       | URL |\n")
+            file.write("| --------------- | ---------- | --- |\n")
+            #for check in self.checks.ResultCheckUrl:
+            #    file.write(f"| {check['identifier']} | {check['uuid']} | {check['url']} |\n")
+            file.write("\n\n")
+        print(f"Markdown file created at: {markdown_file_path}")
+    
     def createMarkDownFileTypes(self):
         # create a markdown file with the name "data.md" in the projectPath
         markdown_file_path = os.path.join(self.projectPath, "types.md")
@@ -185,15 +210,7 @@ class Load:
             file.write("  - navigation\n")
             file.write("  - toc\n")
             file.write("---\n")
-            file.write("# Report Portal\n\n")
-            
-            file.write("## Checks\n\n")
-            file.write("| Check       | Export       |\n")
-            file.write("| ----------- | ------------ |\n")
-            file.write("| Check URL Exist   | /check/urlExist             |\n")
-            file.write("| Check URL Valid   | /check/urlValid             |\n")
-            file.write("\n\n")
-            
+            file.write("# Types\n\n")
             file.write("## Objekte nach Typ\n\n")
             file.write("| Daten      | Format                           | Ansehen\n")
             file.write("| ----------- | --------------------------------| ----------- |\n")
