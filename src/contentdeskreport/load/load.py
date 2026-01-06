@@ -33,7 +33,7 @@ class Load:
     def setLoadProducts(self):
         # All Products to api/products.json
         self.loadProductsToFile(self.products, "products")
-        self.loadProductsToFileAkeneo(self.productsAkeneo, "products")
+        #self.loadProductsToFileAkeneo(self.productsAkeneo, "products")
 
         self.createProductListbyParentTyp("Place")
         self.createProductListbyParentTyp("Accommodation")
@@ -153,7 +153,7 @@ class Load:
         toDayHistory = self.checkLengthinFile("products")
         
         # load existing history file or create a new one
-        history_file_path = os.path.join(self.projectPath, "history.json")
+        history_file_path = os.path.join(self.projectPath+"/history/", "history.json")
         if os.path.exists(history_file_path):
             with open(history_file_path, "r") as file:
                 history_data = json.load(file)
@@ -167,7 +167,7 @@ class Load:
             json.dump(history_data, file, indent=4)
     
     def createMarkDownFileHistoryStats(self):
-        markdown_file_path = os.path.join(self.projectPath, "history.md")
+        markdown_file_path = os.path.join(self.projectPath+"/history/", "history.md")
         with open(markdown_file_path, "w", encoding='utf-8') as file:
             file.write("# History Stats\n\n")
             file.write("## Produktanzahl über die Zeit\n\n")
