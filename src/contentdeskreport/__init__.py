@@ -17,8 +17,7 @@ class ContentdeskReport:
         self.cdnurl = cdnurl
         self.projectPath = projectPath
         self.extractProducts = Extraction(self.host, self.clientid, self.secret, self.user, self.passwd)
-        
-        
+        self.saveProducts()
         self.debugExtractProducts()
         #self.checks = Checks(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
         self.transformProducts = Transform(self.extractProducts.getProducts(), self.projectPath, self.cdnurl)
