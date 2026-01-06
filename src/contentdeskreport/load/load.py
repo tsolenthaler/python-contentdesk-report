@@ -109,6 +109,12 @@ class Load:
         
         with open(projectPath+"/debug/"+str_current_datetime+"/"+fileName+".json", "w") as file:
             file.write(json.dumps(products))
+            
+    def createJsonFile(self, products, folder, fileName, projectPath):
+        if not os.path.exists(projectPath+"/api/"+folder+"/"):
+            os.makedirs(projectPath+"/api/"+folder+"/")
+        with open(projectPath+"/api/"+folder+"/"+fileName+".json", "w") as file:
+            file.write(json.dumps(products))
     
     def createMarkDownString(self, name, filename, count):
         string = ""

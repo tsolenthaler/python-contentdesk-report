@@ -12,7 +12,7 @@ class Extraction:
         
     def getProductsfromTarget(self):
         target = Akeneo(self.host, self.clientid, self.secret, self.user, self.passwd)
-        products = target.getProducts()
+        products = target.getAllProducts()
         return products
     
     def getProducts(self):
