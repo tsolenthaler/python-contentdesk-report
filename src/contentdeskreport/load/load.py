@@ -154,6 +154,9 @@ class Load:
         
         # load existing history file or create a new one
         history_file_path = os.path.join(self.projectPath+"/history/", "history.json")
+        if os.path.exists(self.projectPath+"/history/") == False:
+            os.makedirs(self.projectPath+"/history/")
+        
         if os.path.exists(history_file_path):
             with open(history_file_path, "r") as file:
                 history_data = json.load(file)
