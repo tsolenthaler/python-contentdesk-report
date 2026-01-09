@@ -153,9 +153,9 @@ class Load:
         toDayHistory = self.checkLengthinFile("products")
         
         # load existing history file or create a new one
-        history_file_path = os.path.join(self.projectPath+"/history/", "history.json")
-        if os.path.exists(self.projectPath+"/history/") == False:
-            os.makedirs(self.projectPath+"/history/")
+        history_file_path = os.path.join(self.projectPath+"/api/history/", "history.json")
+        if os.path.exists(self.projectPath+"/api/history/") == False:
+            os.makedirs(self.projectPath+"/api/history/")
         
         if os.path.exists(history_file_path):
             with open(history_file_path, "r") as file:
@@ -177,7 +177,7 @@ class Load:
             file.write("| Datum       | Produktanzahl       |\n")
             file.write("| ----------- | ------------------- |\n")
             # Read history data
-            history_file_path = os.path.join(self.projectPath, "history.json")
+            history_file_path = os.path.join(self.projectPath+"/api/history/", "history.json")
             if os.path.exists(history_file_path):
                 with open(history_file_path, "r") as histfile:
                     history_data = json.load(histfile)
